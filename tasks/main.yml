@@ -1,0 +1,16 @@
+---
+- name: Create temporary directory to store related files
+  tempfile:
+    state: directory
+    suffix: traefik
+  register: traefik_temp_dir
+
+- name: Copy docker-compose to manager
+  copy:
+    src: docker-compose.yml
+    dest: "{{ traefik_temp_dir.path }}/docker-compose.yml"
+  when: "inventory_hostname == groups['integr8-docker-swarm-manager'][0]"
+
+- name: Deploy Traefik in Swarm
+  command: 'docker stack deploy --compose-file {{ traefik_temp_dir.path }}/docker-compose.yml trefik'
+  when: "inventory_hostname == groups['integr8-docker-swarm-manager'][0]"

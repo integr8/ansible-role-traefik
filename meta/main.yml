@@ -1,0 +1,11 @@
+---
+galaxy_info:
+  author: Fábio Luciano
+  description: Ansible role to deploy a container with Traefik
+  company: Integr8.me
+  issue_tracker_url: https://github.com/integr8/ansible-role-traefik/issues
+  license: GPLv3
+  min_ansible_version: 1.2
+  github_branch: development
+  galaxy_tags: ['docker', 'docker-swarm', 'swarm', 'container', 'traefik', 'traefik']
+dependencies: []
