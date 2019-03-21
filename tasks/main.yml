@@ -1,0 +1,10 @@
+---
+- name: Copy docker-compose to manager
+  copy:
+    src: docker-compose.yml
+    dest: /tmp/traefik-docker-compose.yml
+  when: "inventory_hostname == groups['integr8-docker-swarm-manager'][0]"
+
+- name: Deploy Traefik in Swarm
+  command: 'docker stack deploy --compose-file /tmp/traefik-docker-compose.yml seleniumhub'
+  when: "inventory_hostname == groups['integr8-docker-swarm-manager'][0]"
