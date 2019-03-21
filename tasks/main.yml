@@ -1,5 +1,4 @@
 ---
-
 - name: Create temporary directory to store related files
   tempfile:
     state: directory
