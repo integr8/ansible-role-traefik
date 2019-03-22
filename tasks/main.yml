@@ -4,13 +4,20 @@
     state: directory
     suffix: traefik
   register: traefik_temp_dir
+  when: "inventory_hostname == groups['integr8-docker-swarm-manager'][0]"
 
-- name: Copy docker-compose to manager
-  copy:
-    src: docker-compose.yml
+- name: Create htpassword string
+  command: "htpasswd -bn {{ traefik_dashboard_username }} {{ traefik_dashboard_password }}"
+  register: traefik_htpasswd_string
+  delegate_to: localhost
+  when: "inventory_hostname == groups['integr8-docker-swarm-manager'][0]"
+
+- name: Interpolate Ansible variables
+  template:
+    src: docker-compose.yml.j2
     dest: "{{ traefik_temp_dir.path }}/docker-compose.yml"
   when: "inventory_hostname == groups['integr8-docker-swarm-manager'][0]"
 
 - name: Deploy Traefik in Swarm
-  command: 'docker stack deploy --compose-file {{ traefik_temp_dir.path }}/docker-compose.yml trefik'
+  command: 'docker stack deploy --compose-file {{ traefik_temp_dir.path }}/docker-compose.yml traefik'
   when: "inventory_hostname == groups['integr8-docker-swarm-manager'][0]"
