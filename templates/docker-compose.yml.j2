@@ -1,7 +1,7 @@
 version: '3'
 services:
   reverse-proxy:
-    image: traefik
+    image: traefik:{{ traefik_docker_image_version }}
     command: --docker --docker.swarmmode --docker.watch --docker.exposedbydefault=false --debug --logLevel=INFO --accessLog --entrypoints='Name:http Address::80' --entrypoints='Name:https Address::443 TLS' --api
     ports:
       - "80:80"
@@ -15,8 +15,8 @@ services:
       replicas: 2
       labels:
         - traefik.enable=true
-        - traefik.frontend.rule=Host:traefik.integr8.me
-        - traefik.frontend.auth.basic={{ traefik_htpasswd_string.stdout | regex_replace('\$','$$') }}
+        - traefik.frontend.rule=Host:{{ traefik_host }}
+        - traefik.frontend.auth.basic.users={{ traefik_htpasswd_string.stdout | regex_replace('\$','$$') }}
         - traefik.backend=reverse-proxy
         - traefik.port=8080
         - traefik.docker.network=integr8

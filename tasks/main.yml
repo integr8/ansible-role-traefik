@@ -21,3 +21,9 @@
 - name: Deploy Traefik in Swarm
   command: 'docker stack deploy --compose-file {{ traefik_temp_dir.path }}/docker-compose.yml traefik'
   when: "inventory_hostname == groups['integr8-docker-swarm-manager'][0]"
+
+- name: Record Traefik DNS
+  ara_record:
+    key: "traefik_host"
+    value: "http://{{ traefik_host }}"
+    type: url
