@@ -3,6 +3,8 @@ Traefik
 
 Ansible role to deploy a container with Traefik
 
+[![Build Status](https://travis-ci.org/integr8/ansible-role-traefik.svg?branch=development)](https://travis-ci.org/integr8/ansible-role-traefik)
+
 Requirements
 ------------
 
