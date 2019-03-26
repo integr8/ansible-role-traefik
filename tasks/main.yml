@@ -27,3 +27,5 @@
     key: "traefik_host"
     value: "http://{{ traefik_host }}"
     type: url
+  tags:
+    - skip_ansible_lint

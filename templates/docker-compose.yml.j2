@@ -2,11 +2,34 @@ version: '3'
 services:
   reverse-proxy:
     image: traefik:{{ traefik_docker_image_version }}
-    command: --docker --docker.swarmmode --docker.watch --docker.exposedbydefault=false --debug --logLevel=INFO --accessLog --entrypoints='Name:http Address::80' --entrypoints='Name:https Address::443 TLS' --api
+    environment:
+      NAMECOM_USERNAME:
+      NAMECOM_API_TOKEN:
+    command: >
+      --docker
+      --docker.domain='integr8.me'
+      --docker.swarmmode
+      --docker.watch
+      --docker.exposedbydefault=false
+      --debug
+      --logLevel=INFO
+      --accessLog
+      --entrypoints='Name:http Address::80'
+      --entrypoints='Name:https Address::443 TLS'
+      --api
+      --acme
+      --acme.caServer='https://acme-staging-v02.api.letsencrypt.org/directory'
+      --acme.email=
+      --acme.storage='acme.json'
+      --acme.entrypoint='https'
+      --acme.onhostrule=true
+      --acme.acmelogging=true
+      --acme.dnsChallenge.provider=namedotcom
+      --acme.dnsChallenge.delayBeforeCheck=0
+      --acme.domains=*.integr8.me
     ports:
       - "80:80"
       - "443:443"
-      - "8080"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     networks:
@@ -20,6 +43,9 @@ services:
         - traefik.backend=reverse-proxy
         - traefik.port=8080
         - traefik.docker.network=integr8
+        - traefik.redirectorservice.frontend.entryPoints=http
+        - traefik.redirectorservice.frontend.redirect.entryPoint=https
+        - traefik.webservice.frontend.entryPoints=https
       placement:
         constraints:
           - node.role == manager
