@@ -2,5 +2,4 @@
 traefik_host: traefik.integr8.me
 traefik_dashboard_username: admin
 traefik_dashboard_password: password
-
-traefik_docker_image_version: latest
+traefik_docker_image_version: "1.7"
