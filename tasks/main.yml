@@ -1,6 +1,6 @@
 ---
 - name: Install python virtualenv
-  package: 
+  package:
     name: python-virtualenv
     state: present
   when: "inventory_hostname == groups['swarm_manager'][0]"
@@ -13,14 +13,14 @@
   when: "inventory_hostname == groups['swarm_manager'][0]"
 
 - name: Install pyyaml inside of virtualenv
-  pip: 
+  pip:
     name: pyyaml
     version: 5.1.1
     virtualenv: "{{ traefik_venv.path }}"
   when: "inventory_hostname == groups['swarm_manager'][0]"
 
 - name: Install jsondiff inside of virtualenv
-  pip: 
+  pip:
     name: jsondiff
     version: 1.1.2
     virtualenv: "{{ traefik_venv.path }}"
