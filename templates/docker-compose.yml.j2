@@ -20,7 +20,7 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     networks:
-      - integr8
+      - integr8_tools
     deploy:
       replicas: 2
       labels:
@@ -29,10 +29,10 @@ services:
         - traefik.frontend.auth.basic.users={{ traefik_htpasswd_string.stdout | regex_replace('\$','$$') }}
         - traefik.backend=reverse-proxy
         - traefik.port=8080
-        - traefik.docker.network=integr8
+        - traefik.docker.network=integr8_tools
       placement:
         constraints:
           - node.role == manager
 networks:
-  integr8:
+  integr8_tools:
     external: true
